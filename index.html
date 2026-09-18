@@ -8,14 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#FAF9F5;
-    --ink:#1B2230;
-    --navy:#16233D;
-    --brass:#9C6B2E;
-    --brass-soft:#C79A56;
-    --line:#DEDACE;
-    --muted:#6B6A63;
+    --paper:#F7F4EC;
+    --ink:#1C2230;
+    --navy:#0F1B2E;
+    --navy-soft:#16243C;
+    --brass:#A97C2F;
+    --brass-soft:#CFA35E;
+    --line:#E4DFD0;
+    --line-dark:rgba(255,255,255,.14);
+    --muted:#6E6B60;
+    --muted-invert:#AEB4C4;
     --card:#FFFFFF;
+    --invert:#F3F1E9;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -34,36 +38,36 @@
   /* NAV */
   header.site{
     position:sticky; top:0; z-index:50;
-    background:rgba(250,249,245,0.92);
+    background:rgba(15,27,46,0.96);
     backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid var(--line-dark);
   }
   .navbar{ display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:1080px; margin:0 auto; }
-  .brandmark{ font-family:'Newsreader', serif; font-size:1.15rem; font-weight:600; letter-spacing:.2px; }
+  .brandmark{ font-family:'Newsreader', serif; font-size:1.15rem; font-weight:600; letter-spacing:.2px; color:var(--invert); }
   .navlinks{ display:flex; gap:26px; font-size:.92rem; }
-  .navlinks a{ text-decoration:none; color:var(--ink); border-bottom:1px solid transparent; padding-bottom:3px; transition:border-color .2s; }
-  .navlinks a:hover{ border-color:var(--brass); }
+  .navlinks a{ text-decoration:none; color:var(--invert); border-bottom:1px solid transparent; padding-bottom:3px; transition:border-color .2s; }
+  .navlinks a:hover{ border-color:var(--brass-soft); }
   @media (max-width:680px){ .navlinks{ display:none; } }
 
   /* HERO */
-  .hero{ padding:88px 0 56px; border-bottom:1px solid var(--line); }
-  .kicker{ color:var(--brass); font-size:.85rem; font-weight:500; margin:0 0 14px; }
-  .hero h1{ font-size:clamp(2.3rem, 5vw, 3.6rem); font-weight:500; line-height:1.08; margin:0 0 22px; max-width:16ch; }
-  .hero h1 em{ font-style:italic; color:var(--brass); }
-  .hero p.lead{ max-width:56ch; font-size:1.08rem; color:#3a3f4a; margin:0 0 34px; }
+  .hero{ padding:88px 0 0; background:linear-gradient(180deg,var(--navy) 0%,var(--navy-soft) 100%); color:var(--invert); border-bottom:none; }
+  .kicker{ color:var(--brass-soft); font-size:.85rem; font-weight:500; margin:0 0 14px; letter-spacing:.2px; }
+  .hero h1{ font-size:clamp(2.3rem, 5vw, 3.6rem); font-weight:500; line-height:1.08; margin:0 0 22px; max-width:16ch; color:var(--invert); }
+  .hero h1 em{ font-style:italic; color:var(--brass-soft); }
+  .hero p.lead{ max-width:56ch; font-size:1.08rem; color:var(--muted-invert); margin:0 0 34px; }
   .cta-row{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:52px; }
-  .btn{ display:inline-block; padding:11px 22px; border-radius:2px; font-size:.92rem; text-decoration:none; border:1px solid var(--navy); }
-  .btn.primary{ background:var(--navy); color:#fff; }
-  .btn.primary:hover{ background:#0d1729; }
-  .btn.ghost{ color:var(--navy); }
-  .btn.ghost:hover{ background:rgba(22,35,61,.06); }
+  .btn{ display:inline-block; padding:11px 22px; border-radius:2px; font-size:.92rem; text-decoration:none; }
+  .btn.primary{ background:var(--brass-soft); color:var(--navy); border:1px solid var(--brass-soft); font-weight:500; }
+  .btn.primary:hover{ background:#E0B876; }
+  .btn.ghost{ color:var(--invert); border:1px solid rgba(255,255,255,.35); }
+  .btn.ghost:hover{ background:rgba(255,255,255,.08); }
 
-  .stat-strip{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); }
-  .stat{ padding:22px 24px 4px 0; border-right:1px solid var(--line); }
+  .stat-strip{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line-dark); }
+  .stat{ padding:22px 24px 26px 0; border-right:1px solid var(--line-dark); }
   .stat:last-child{ border-right:none; }
-  .stat .num{ font-family:'Newsreader', serif; font-size:2rem; color:var(--navy); }
-  .stat .label{ font-size:.78rem; color:var(--muted); margin-top:4px; }
-  @media (max-width:720px){ .stat-strip{ grid-template-columns:repeat(2,1fr); } .stat{ border-right:none; border-bottom:1px solid var(--line); padding-bottom:16px; } }
+  .stat .num{ font-family:'Newsreader', serif; font-size:2rem; color:var(--brass-soft); }
+  .stat .label{ font-size:.78rem; color:var(--muted-invert); margin-top:4px; }
+  @media (max-width:720px){ .stat-strip{ grid-template-columns:repeat(2,1fr); } .stat{ border-right:none; border-bottom:1px solid var(--line-dark); padding-bottom:16px; } }
 
   /* SECTION */
   section{ padding:72px 0; border-bottom:1px solid var(--line); }
@@ -74,7 +78,7 @@
 
   /* ABOUT */
   .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:56px; }
-  .about-grid p{ margin:0 0 16px; color:#333; }
+  .about-grid p{ margin:0 0 16px; color:#2B2F33; }
   .pillars{ display:flex; flex-direction:column; gap:18px; }
   .pillar{ border-left:2px solid var(--brass-soft); padding-left:16px; }
   .pillar h4{ margin:0 0 4px; font-size:.98rem; }
@@ -87,7 +91,7 @@
   .job .when{ color:var(--muted); font-size:.85rem; font-family:'IBM Plex Mono',monospace; }
   .job h3{ margin:0 0 4px; font-size:1.2rem; font-weight:500; }
   .job .role{ color:var(--brass); font-size:.9rem; margin-bottom:12px; }
-  .job ul{ margin:0; padding-left:18px; color:#333; font-size:.94rem; }
+  .job ul{ margin:0; padding-left:18px; color:#2B2F33; font-size:.94rem; }
   .job li{ margin-bottom:7px; }
   @media (max-width:680px){ .job{ grid-template-columns:1fr; gap:8px; } }
 
@@ -101,7 +105,7 @@
   .tags{ display:flex; gap:8px; flex-wrap:wrap; }
   .tag{ font-size:.72rem; padding:3px 9px; border:1px solid var(--line); border-radius:20px; color:var(--muted); white-space:nowrap; }
   .tag.flag{ border-color:var(--brass); color:var(--brass); }
-  .proj p{ margin:0 0 12px; color:#333; font-size:.96rem; max-width:74ch; }
+  .proj p{ margin:0 0 12px; color:#2B2F33; font-size:.96rem; max-width:74ch; }
   .metrics{ display:flex; gap:22px; flex-wrap:wrap; margin:10px 0 12px; }
   .metric{ font-size:.82rem; color:var(--navy); }
   .metric b{ font-family:'Newsreader',serif; font-size:1.05rem; display:block; color:var(--brass); }
@@ -114,7 +118,7 @@
   /* SKILLS */
   .skill-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:32px; }
   .skill-col h4{ font-size:.82rem; text-transform:none; letter-spacing:.3px; color:var(--brass); margin:0 0 12px; font-weight:600;}
-  .skill-col ul{ list-style:none; margin:0; padding:0; font-size:.92rem; color:#333; }
+  .skill-col ul{ list-style:none; margin:0; padding:0; font-size:.92rem; color:#2B2F33; }
   .skill-col li{ margin-bottom:8px; }
   @media (max-width:760px){ .skill-grid{ grid-template-columns:repeat(2,1fr); } }
 
@@ -134,17 +138,18 @@
   @media (max-width:760px){ .file-grid{ grid-template-columns:1fr 1fr; } }
   @media (max-width:480px){ .file-grid{ grid-template-columns:1fr; } }
 
-  .addmore{ border:1px dashed var(--brass-soft); padding:26px; text-align:left; margin-top:26px; background:#FFFDF8; }
+  .addmore{ border:1px dashed var(--brass-soft); padding:26px; text-align:left; margin-top:26px; background:#F8FAF8; }
   .addmore h4{ margin:0 0 6px; font-size:1rem; }
   .addmore p{ margin:0; font-size:.9rem; color:var(--muted); max-width:64ch; }
 
   /* FOOTER / CONTACT */
-  footer{ padding:56px 0 40px; }
+  footer{ padding:64px 0 40px; background:var(--navy); color:var(--invert); }
   .contact-row{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; }
-  .contact-row h2{ font-size:2rem; font-weight:500; margin:0 0 8px; }
+  .contact-row h2{ font-size:2rem; font-weight:500; margin:0 0 8px; color:var(--invert); }
+  .contact-row p{ color:var(--muted-invert); }
   .contact-links{ display:flex; gap:26px; font-size:.95rem; }
-  .contact-links a{ text-decoration:none; border-bottom:1px solid var(--brass-soft); }
-  .fine{ margin-top:48px; color:var(--muted); font-size:.8rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .contact-links a{ text-decoration:none; color:var(--invert); border-bottom:1px solid var(--brass-soft); }
+  .fine{ margin-top:48px; color:var(--muted-invert); font-size:.8rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px solid var(--line-dark); padding-top:20px; }
 </style>
 </head>
 <body>
@@ -164,7 +169,8 @@
   </div>
 </header>
 
-<section class="hero wrap" style="border-bottom:none;">
+<section class="hero">
+ <div class="wrap">
   <p class="kicker">BUSINESS ANALYST — STRATEGY, DATA &amp; MACHINE LEARNING</p>
   <h1>Turning fragmented data into <em>decisions</em> that move revenue.</h1>
   <p class="lead">I build the pipelines, models and dashboards that sit between raw data and a business decision — cross-sell scoring for 50M+ customer records, channel ROI models, demand forecasts, and the reconciliation engines that keep finance honest. Currently a Business Analyst at CarDekho (Southeast Asia); previously at Aegis Covenant.</p>
@@ -180,6 +186,7 @@
     <div class="stat"><div class="num">₱59M</div><div class="label">in transactions reconciled via a rule-based engine</div></div>
     <div class="stat"><div class="num">12+</div><div class="label">applied analytics &amp; ML projects, industry and XLRI</div></div>
   </div>
+ </div>
 </section>
 
 <section id="about" class="wrap">
@@ -267,14 +274,15 @@
       </div>
     </div>
 
-    <div class="proj pending">
+    <div class="proj">
       <div class="n">02</div>
       <div>
         <div class="proj-head">
-          <h3>HMO Insurance AI Agent</h3>
-          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">AI Agent</span></div>
+          <h3>HMO Insurance AI Advisor</h3>
+          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">FastAPI · Gemini API · SQLite</span></div>
         </div>
-        <p>Placeholder — details to be added. Give me the build notes (what it does, the stack, and the outcome) and I'll write this case study up in the same format as the rest.</p>
+        <p>An AI-powered HMO insurance advisor built on a modular agent architecture: a FastAPI web layer receives customer queries, validates requests and manages sessions, then hands conversation to an orchestration layer that blends conversation history, customer requirements, business rules and LLM-generated responses. Conversation-state management tracks employee count, budget, industry, coverage needs and renewal details across turns. A deterministic business layer filters eligible plans from structured Excel plan data, while Gemini handles natural-language explanation and asks follow-up questions when information is missing. Separate SQLite databases persist user profiles, requirements and conversation history for auditability and analytics. The architecture also supports tool calling, prompt building, recommendation gating, error handling, logging and token monitoring — built with room to extend into RAG, vector search, multi-agent workflows and CRM integration.</p>
+        <div class="proj-links"><a href="https://drive.google.com/drive/folders/1snTDnibBVI6KKHPvfqh82FbQlOS60A8f" target="_blank" rel="noopener">Watch demo video</a></div>
       </div>
     </div>
 
@@ -466,21 +474,22 @@
     <div class="edu-card">
       <h4>Post Graduate Certificate, Business Analytics</h4>
       <div class="when">XLRI, Jamshedpur · 2025 – 2026</div>
-      <p style="margin:0; font-size:.9rem; color:#333;">Batch PGCBA-6. Coursework in data mining, modelling for business analytics, NLP, graph databases and forecasting — several projects featured above.</p>
+      <p style="margin:0; font-size:.9rem; color:#2B2F33;">Batch PGCBA-6. Coursework in data mining, modelling for business analytics, NLP, graph databases and forecasting — several projects featured above.</p>
     </div>
     <div class="edu-card">
       <h4>B.Com (Accounting &amp; Finance)</h4>
       <div class="when">University of Calcutta, BESC College · 2017 – 2020</div>
-      <p style="margin:0; font-size:.9rem; color:#333;">Foundation in financial accounting and analysis, later extended into data-driven business analytics.</p>
+      <p style="margin:0; font-size:.9rem; color:#2B2F33;">Foundation in financial accounting and analysis, later extended into data-driven business analytics.</p>
     </div>
   </div>
 </section>
 
-<footer id="contact" class="wrap">
+<footer id="contact">
+ <div class="wrap">
   <div class="contact-row">
     <div>
       <h2>Let's talk data.</h2>
-      <p style="max-width:46ch; color:var(--muted); margin:0;">Open to Business Analyst, Strategy Consulting and BI roles, and to project collaborations in ML, NLP and analytics.</p>
+      <p style="max-width:46ch; margin:0;">Open to Business Analyst, Strategy Consulting and BI roles, and to project collaborations in ML, NLP and analytics.</p>
     </div>
     <div class="contact-links">
       <a href="mailto:kunalksh07@gmail.com">kunalksh07@gmail.com</a>
@@ -492,6 +501,7 @@
     <span>Kunal Kaushal — Business Analyst</span>
     <span>Gurgaon, India</span>
   </div>
+ </div>
 </footer>
 
 </body>
