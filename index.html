@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kunal Kaushal — Business Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF9F5;
+    --ink:#1B2230;
+    --navy:#16233D;
+    --brass:#9C6B2E;
+    --brass-soft:#C79A56;
+    --line:#DEDACE;
+    --muted:#6B6A63;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+  }
+  h1,h2,h3,.serif{ font-family:'Newsreader', serif; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 28px; }
+
+  /* NAV */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,249,245,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .navbar{ display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:1080px; margin:0 auto; }
+  .brandmark{ font-family:'Newsreader', serif; font-size:1.15rem; font-weight:600; letter-spacing:.2px; }
+  .navlinks{ display:flex; gap:26px; font-size:.92rem; }
+  .navlinks a{ text-decoration:none; color:var(--ink); border-bottom:1px solid transparent; padding-bottom:3px; transition:border-color .2s; }
+  .navlinks a:hover{ border-color:var(--brass); }
+  @media (max-width:680px){ .navlinks{ display:none; } }
+
+  /* HERO */
+  .hero{ padding:88px 0 56px; border-bottom:1px solid var(--line); }
+  .kicker{ color:var(--brass); font-size:.85rem; font-weight:500; margin:0 0 14px; }
+  .hero h1{ font-size:clamp(2.3rem, 5vw, 3.6rem); font-weight:500; line-height:1.08; margin:0 0 22px; max-width:16ch; }
+  .hero h1 em{ font-style:italic; color:var(--brass); }
+  .hero p.lead{ max-width:56ch; font-size:1.08rem; color:#3a3f4a; margin:0 0 34px; }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:52px; }
+  .btn{ display:inline-block; padding:11px 22px; border-radius:2px; font-size:.92rem; text-decoration:none; border:1px solid var(--navy); }
+  .btn.primary{ background:var(--navy); color:#fff; }
+  .btn.primary:hover{ background:#0d1729; }
+  .btn.ghost{ color:var(--navy); }
+  .btn.ghost:hover{ background:rgba(22,35,61,.06); }
+
+  .stat-strip{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); }
+  .stat{ padding:22px 24px 4px 0; border-right:1px solid var(--line); }
+  .stat:last-child{ border-right:none; }
+  .stat .num{ font-family:'Newsreader', serif; font-size:2rem; color:var(--navy); }
+  .stat .label{ font-size:.78rem; color:var(--muted); margin-top:4px; }
+  @media (max-width:720px){ .stat-strip{ grid-template-columns:repeat(2,1fr); } .stat{ border-right:none; border-bottom:1px solid var(--line); padding-bottom:16px; } }
+
+  /* SECTION */
+  section{ padding:72px 0; border-bottom:1px solid var(--line); }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:40px; gap:20px; flex-wrap:wrap; }
+  .section-head h2{ font-size:1.9rem; font-weight:500; margin:0; }
+  .section-head .idx{ font-family:'IBM Plex Mono', monospace; color:var(--brass); font-size:.85rem; }
+  .section-note{ color:var(--muted); max-width:60ch; font-size:.98rem; margin-top:-24px; margin-bottom:36px;}
+
+  /* ABOUT */
+  .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:56px; }
+  .about-grid p{ margin:0 0 16px; color:#333; }
+  .pillars{ display:flex; flex-direction:column; gap:18px; }
+  .pillar{ border-left:2px solid var(--brass-soft); padding-left:16px; }
+  .pillar h4{ margin:0 0 4px; font-size:.98rem; }
+  .pillar p{ margin:0; font-size:.88rem; color:var(--muted); }
+  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; } }
+
+  /* EXPERIENCE */
+  .job{ display:grid; grid-template-columns:200px 1fr; gap:28px; padding:26px 0; border-top:1px solid var(--line); }
+  .job:first-of-type{ border-top:none; }
+  .job .when{ color:var(--muted); font-size:.85rem; font-family:'IBM Plex Mono',monospace; }
+  .job h3{ margin:0 0 4px; font-size:1.2rem; font-weight:500; }
+  .job .role{ color:var(--brass); font-size:.9rem; margin-bottom:12px; }
+  .job ul{ margin:0; padding-left:18px; color:#333; font-size:.94rem; }
+  .job li{ margin-bottom:7px; }
+  @media (max-width:680px){ .job{ grid-template-columns:1fr; gap:8px; } }
+
+  /* PROJECTS */
+  .proj-list{ display:flex; flex-direction:column; }
+  .proj{ display:grid; grid-template-columns:64px 1fr; gap:24px; padding:32px 0; border-top:1px solid var(--line); }
+  .proj:first-child{ border-top:none; }
+  .proj .n{ font-family:'Newsreader',serif; font-size:1.6rem; color:var(--line); }
+  .proj-head{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:baseline; margin-bottom:10px;}
+  .proj h3{ margin:0; font-size:1.28rem; font-weight:500; }
+  .tags{ display:flex; gap:8px; flex-wrap:wrap; }
+  .tag{ font-size:.72rem; padding:3px 9px; border:1px solid var(--line); border-radius:20px; color:var(--muted); white-space:nowrap; }
+  .tag.flag{ border-color:var(--brass); color:var(--brass); }
+  .proj p{ margin:0 0 12px; color:#333; font-size:.96rem; max-width:74ch; }
+  .metrics{ display:flex; gap:22px; flex-wrap:wrap; margin:10px 0 12px; }
+  .metric{ font-size:.82rem; color:var(--navy); }
+  .metric b{ font-family:'Newsreader',serif; font-size:1.05rem; display:block; color:var(--brass); }
+  .proj-links{ display:flex; gap:16px; font-size:.85rem; margin-top:8px; }
+  .proj-links a{ text-decoration:none; border-bottom:1px solid var(--brass-soft); color:var(--navy); }
+  .proj-links a:hover{ color:var(--brass); }
+  .proj.pending{ opacity:.75; }
+  .proj.pending p{ font-style:italic; }
+
+  /* SKILLS */
+  .skill-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:32px; }
+  .skill-col h4{ font-size:.82rem; text-transform:none; letter-spacing:.3px; color:var(--brass); margin:0 0 12px; font-weight:600;}
+  .skill-col ul{ list-style:none; margin:0; padding:0; font-size:.92rem; color:#333; }
+  .skill-col li{ margin-bottom:8px; }
+  @media (max-width:760px){ .skill-grid{ grid-template-columns:repeat(2,1fr); } }
+
+  /* EDUCATION */
+  .edu{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .edu-card{ border:1px solid var(--line); background:var(--card); padding:24px; }
+  .edu-card h4{ margin:0 0 4px; font-size:1.05rem; }
+  .edu-card .when{ font-size:.82rem; color:var(--muted); margin-bottom:10px; font-family:'IBM Plex Mono',monospace;}
+  @media (max-width:680px){ .edu{ grid-template-columns:1fr; } }
+
+  /* DOWNLOADS */
+  .file-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .file{ border:1px solid var(--line); background:var(--card); padding:16px 18px; display:flex; flex-direction:column; gap:8px; }
+  .file .ftype{ font-family:'IBM Plex Mono',monospace; font-size:.7rem; color:var(--brass); }
+  .file .fname{ font-size:.92rem; font-weight:500; }
+  .file a.dl{ font-size:.82rem; text-decoration:none; color:var(--navy); border-bottom:1px solid var(--brass-soft); align-self:flex-start; }
+  @media (max-width:760px){ .file-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:480px){ .file-grid{ grid-template-columns:1fr; } }
+
+  .addmore{ border:1px dashed var(--brass-soft); padding:26px; text-align:left; margin-top:26px; background:#FFFDF8; }
+  .addmore h4{ margin:0 0 6px; font-size:1rem; }
+  .addmore p{ margin:0; font-size:.9rem; color:var(--muted); max-width:64ch; }
+
+  /* FOOTER / CONTACT */
+  footer{ padding:56px 0 40px; }
+  .contact-row{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; }
+  .contact-row h2{ font-size:2rem; font-weight:500; margin:0 0 8px; }
+  .contact-links{ display:flex; gap:26px; font-size:.95rem; }
+  .contact-links a{ text-decoration:none; border-bottom:1px solid var(--brass-soft); }
+  .fine{ margin-top:48px; color:var(--muted); font-size:.8rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="navbar">
+    <div class="brandmark">Kunal Kaushal</div>
+    <nav class="navlinks">
+      <a href="#about">Profile</a>
+      <a href="#experience">Experience</a>
+      <a href="#work">Selected Work</a>
+      <a href="#notes">Notes</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero wrap" style="border-bottom:none;">
+  <p class="kicker">BUSINESS ANALYST — STRATEGY, DATA &amp; MACHINE LEARNING</p>
+  <h1>Turning fragmented data into <em>decisions</em> that move revenue.</h1>
+  <p class="lead">I build the pipelines, models and dashboards that sit between raw data and a business decision — cross-sell scoring for 50M+ customer records, channel ROI models, demand forecasts, and the reconciliation engines that keep finance honest. Currently a Business Analyst at CarDekho (Southeast Asia); previously at Aegis Covenant.</p>
+  <div class="cta-row">
+    <a class="btn primary" href="#work">See selected work</a>
+    <a class="btn ghost" href="files/KunalKaushalResume.pdf" download>Download résumé</a>
+    <a class="btn ghost" href="https://www.linkedin.com/in/kunalksh07" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn ghost" href="https://github.com/KunalKsh" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="stat-strip">
+    <div class="stat"><div class="num">3 yrs</div><div class="label">Business analytics &amp; BI, Gurgaon</div></div>
+    <div class="stat"><div class="num">50M+</div><div class="label">customer records consolidated into a single ML pipeline</div></div>
+    <div class="stat"><div class="num">₱59M</div><div class="label">in transactions reconciled via a rule-based engine</div></div>
+    <div class="stat"><div class="num">12+</div><div class="label">applied analytics &amp; ML projects, industry and XLRI</div></div>
+  </div>
+</section>
+
+<section id="about" class="wrap">
+  <div class="section-head"><h2>Profile</h2><span class="idx">01</span></div>
+  <div class="about-grid">
+    <div>
+      <p>I'm a Business Analyst with three years of experience spanning insurance operations, automotive marketplaces, and applied machine learning — currently building cross-selling and lead-scoring systems at CarDekho's Southeast Asia business, and previously running placement analytics and reconciliation for Aegis Covenant.</p>
+      <p>My work sits at the intersection of engineering discipline and business judgment: I design the ETL and feature pipelines myself, choose and validate the model, and then translate the output into something a sales or marketing team can act on the same week — a lead list, a budget reallocation, a dashboard, or a decision rule.</p>
+      <p>I'm currently completing a Post Graduate Certificate in Business Analytics at XLRI Jamshedpur, where my coursework projects (linked below) extend the same discipline into forecasting, NLP, clustering and graph data models.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar"><h4>Pipelines that scale</h4><p>Python + SQL ETL built to move from millions of raw rows to a decision-ready dataset without breaking.</p></div>
+      <div class="pillar"><h4>Models that get used</h4><p>Classification, clustering and NLP work chosen for interpretability and deployability, not leaderboard scores.</p></div>
+      <div class="pillar"><h4>Numbers that travel</h4><p>Power BI / DAX dashboards and one-page recommendations built for people who don't have time to read a notebook.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="wrap">
+  <div class="section-head"><h2>Experience</h2><span class="idx">02</span></div>
+
+  <div class="job">
+    <div class="when">Sept 2025 — Present<br>Gurgaon, IN</div>
+    <div>
+      <h3>CarDekho (Southeast Asia)</h3>
+      <div class="role">Business Analyst</div>
+      <ul>
+        <li>Engineered an end-to-end cross-selling ML pipeline in Python &amp; SQL, consolidating 50M+ records into 36K high-quality leads for the Philippines and Indonesia markets.</li>
+        <li>Built an NLP-based gender-prediction model (TF-IDF + character n-grams + Logistic Regression) reaching 97% accuracy to enrich customer demographics for segmentation.</li>
+        <li>Implemented ML-driven lead scoring and rule-based product allocation, improving conversion targeting and sales efficiency.</li>
+        <li>Built Power BI / DAX dashboards tracking agent efficiency, lead lifecycle, funnel conversion and campaign ROI.</li>
+        <li>Designed a tolerance-based reconciliation engine processing ₱59M in transactions, and cut manual reporting by ~65% with an automated Google Apps Script data pipeline.</li>
+        <li>Mentored four interns on analytics, SQL and dashboarding, contributing to two full-time conversions.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="when">Sept 2023 — Aug 2025<br>Gurgaon, IN</div>
+    <div>
+      <h3>Aegis Covenant</h3>
+      <div class="role">Business Analyst</div>
+      <ul>
+        <li>Increased business placement by 28% through segmentation and placement-efficiency analysis in SQL.</li>
+        <li>Analyzed 600K+ records across 100+ features and built Plotly dashboards for real-time rejection analysis and insurer performance tracking.</li>
+        <li>Improved reporting efficiency by 35% by tuning 50 SQL queries and optimizing the ETL pipeline in SQL Server.</li>
+        <li>Reduced Insurer–OEM issue resolution time by 34% using hypothesis testing, A/B testing and root-cause analysis.</li>
+        <li>Led a South India growth strategy engagement with client stakeholders, generating ₹50 lakh in profit within six months.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="when">2021 — 2022</div>
+    <div>
+      <h3>Pocket FM · WorldRef</h3>
+      <div class="role">Creative Intern (Content &amp; SEO)</div>
+      <ul>
+        <li>Produced localization and content strategy for US-market audiobooks; ran SEO-focused content planning and keyword strategy for client acquisition.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="wrap">
+  <div class="section-head"><h2>Selected Work</h2><span class="idx">03</span></div>
+  <p class="section-note">Twelve projects spanning production ML at CarDekho, an insurance analytics tenure at Aegis, and the applied coursework from XLRI Jamshedpur's PGCBA. Files for each are in the Downloads section below.</p>
+
+  <div class="proj-list">
+
+    <div class="proj">
+      <div class="n">01</div>
+      <div>
+        <div class="proj-head">
+          <h3>Cross-Selling Lead Pipeline</h3>
+          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">Python · SQL · NLP</span></div>
+        </div>
+        <p>Built a 12-step, end-to-end pipeline that consolidates 7.5M raw SQL records into a single customer view, predicts missing gender via a TF-IDF + Logistic Regression NLP model on Philippine names, scores lead quality with a Random Forest, and allocates one of three products per customer using a city-tier rule matrix — output as a stratified 36K-record, bias-free dataset ready for A/B testing.</p>
+        <div class="metrics">
+          <div class="metric"><b>96.8%</b>model accuracy (gender classifier)</div>
+          <div class="metric"><b>7.5M → 36K</b>raw records to outreach-ready leads</div>
+          <div class="metric"><b>Zero</b>overlap across A/B test buckets</div>
+        </div>
+        <div class="proj-links"><a href="files/Cross_Selling_Lead_Pipeline.pdf" download>Download deck (PDF)</a></div>
+      </div>
+    </div>
+
+    <div class="proj pending">
+      <div class="n">02</div>
+      <div>
+        <div class="proj-head">
+          <h3>HMO Insurance AI Agent</h3>
+          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">AI Agent</span></div>
+        </div>
+        <p>Placeholder — details to be added. Give me the build notes (what it does, the stack, and the outcome) and I'll write this case study up in the same format as the rest.</p>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">03</div>
+      <div>
+        <div class="proj-head">
+          <h3>Graph Databases in Philippine Vehicle Insurance</h3>
+          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">Industry Research</span></div>
+        </div>
+        <p>An industry analysis proposing graph databases (nodes, edges, index-free adjacency) as a fraud-detection and commission-hierarchy tool for Philippine vehicle insurers — mapping how shared mobile numbers, plate numbers and lead sources can reveal staged-accident fraud rings that relational SQL joins miss at scale.</p>
+        <div class="proj-links"><a href="files/Graph_Databases_PH_Insurance.pdf" download>Download report (PDF)</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">04</div>
+      <div>
+        <div class="proj-head">
+          <h3>Two-Wheeler Insurance Distribution Optimization</h3>
+          <div class="tags"><span class="tag">Prescriptive Analytics</span><span class="tag">Interactive</span></div>
+        </div>
+        <p>A prescriptive optimization model for two-wheeler insurance distribution, delivered as a standalone interactive report — problem framing, model formulation, and a scenario dashboard that lets a reader adjust inputs and see the recommended allocation update live.</p>
+        <div class="proj-links"><a href="files/two_wheeler_insurance_optimization.html" target="_blank">Open interactive report</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">05</div>
+      <div>
+        <div class="proj-head">
+          <h3>Marketing Channel Effectiveness Study</h3>
+          <div class="tags"><span class="tag flag">XLRI · Data Mining</span><span class="tag">K-Means · Decision Tree</span></div>
+        </div>
+        <p>With Deepika Rohra and Sneha Jacob. Used K-Means clustering (validated via hierarchical clustering, elbow and silhouette methods, k=4) to segment customers by ROI, profit margin and cost-per-conversion, then trained a Decision Tree to map acquisition channels to the resulting value segments — reframing marketing spend decisions around customer value instead of acquisition volume.</p>
+        <div class="metrics">
+          <div class="metric"><b>674 ROI</b>top segment ("ROI Powerhouse")</div>
+          <div class="metric"><b>100%</b>Decision Tree channel-classification accuracy</div>
+        </div>
+        <div class="proj-links"><a href="files/Marketing_Channel_Effectiveness_Study.pdf" download>Download deck (PDF)</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">06</div>
+      <div>
+        <div class="proj-head">
+          <h3>Modelling for Business Analytics: Lead Source &amp; Response Time</h3>
+          <div class="tags"><span class="tag flag">XLRI</span><span class="tag">R · Logistic Regression · ANOVA</span></div>
+        </div>
+        <p>A full hypothesis-testing and regression study on CarDekho SEA lead data — chi-square and ANOVA tests, two logistic regression models, and an ROC-validated model showing that lead source has no significant effect on conversion, but every additional hour of dealer response delay cuts conversion odds by ~4%.</p>
+        <div class="metrics">
+          <div class="metric"><b>–4%</b>conversion odds per hour of delay</div>
+          <div class="metric"><b>AUC 0.657</b>enhanced logistic model</div>
+        </div>
+        <div class="proj-links"><a href="files/Modelling_for_Business_Analytics.pdf" download>Download report (PDF)</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">07</div>
+      <div>
+        <div class="proj-head">
+          <h3>Predicting Movie Ratings with Machine Learning</h3>
+          <div class="tags"><span class="tag">Regression · Recommender Systems</span></div>
+        </div>
+        <p>Built and benchmarked Linear Regression, Random Forest and Gradient Boosting regressors on the MovieLens dataset (100K ratings, 610 users, 9,742 movies) with 24 engineered user/movie/genre features, to power a ratings-prediction layer for a recommendation engine — validated with 10-fold cross-validation and framed as a cold-start and personalization solution.</p>
+        <div class="metrics">
+          <div class="metric"><b>R² 0.424</b>Gradient Boosting (final model)</div>
+          <div class="metric"><b>±0.598</b>stars mean absolute error</div>
+        </div>
+        <div class="proj-links"><a href="files/Predicting_Movie_Ratings.pdf" download>Download report (PDF)</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">08</div>
+      <div>
+        <div class="proj-head">
+          <h3>Data Mining: Diabetes Risk Classification &amp; Clustering</h3>
+          <div class="tags"><span class="tag flag">XLRI · Data Mining</span><span class="tag">Naive Bayes · Decision Tree · k-NN</span></div>
+        </div>
+        <p>Analyzed a 32K-record diabetes dataset with a class-imbalance-aware modeling approach — ROSE oversampling to rebalance classes, a three-way classifier comparison (k-NN, Naive Bayes, Decision Tree), and k-means clustering on BMI/Age/General Health that isolated a high-risk cohort with ~35% diabetes prevalence versus ~5% in the healthiest cluster.</p>
+        <div class="metrics">
+          <div class="metric"><b>0.70</b>recall after class balancing (vs 0.35 baseline)</div>
+          <div class="metric"><b>Decision Tree</b>best F1 / AUC-ROC overall</div>
+        </div>
+        <div class="proj-links"><a href="files/Data_Mining_Diabetes_Assignment.pdf" download>Download report (PDF)</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">09</div>
+      <div>
+        <div class="proj-head">
+          <h3>Capstone: Organ-Wise Disease Risk Prediction</h3>
+          <div class="tags"><span class="tag flag">XLRI · Capstone</span><span class="tag">Logistic Regression · Random Forest · GBM</span></div>
+        </div>
+        <p>An end-to-end health-risk ML pipeline using Logistic Regression, Random Forest and Gradient Boosting across 100+ clinical, demographic and lifestyle parameters, with engineered biomarker categorization, age/smoking/lifestyle risk multipliers, and dashboards reporting probability-based cardiovascular, hepatic, renal, metabolic and hematology risk.</p>
+        <div class="proj-links"><a href="files/Capstone_Organ_Wise_Disease_Risk.pdf" download>Download report (PDF)</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">10</div>
+      <div>
+        <div class="proj-head">
+          <h3>Market Street Wine — Case Study</h3>
+          <div class="tags"><span class="tag flag">XLRI · Case Study</span><span class="tag">R · EDA</span></div>
+        </div>
+        <p>With Deepika Rohra, Diwakar Sharma and Mayank Rathod. A retail strategy case using R for data cleaning and exploratory analysis of a wine catalog — identifying under-$20, 750ml Red/White/Rosé wines as the highest-opportunity segment for a wine retailer targeting millennial buyers, based on flavor variety, regional availability and rating-vs-price patterns.</p>
+        <div class="proj-links"><a href="files/Market_Street_Wine_Case_Study.pptx" download>Download deck (PPTX)</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">11</div>
+      <div>
+        <div class="proj-head">
+          <h3>FurniturePro — Power BI Sales &amp; Operations Report</h3>
+          <div class="tags"><span class="tag">Power BI · DAX</span></div>
+        </div>
+        <p>A Power BI report modeling FurniturePro's sales, inventory and operational KPIs — built as a working dashboard file for stakeholders to explore directly rather than a static export.</p>
+        <div class="proj-links"><a href="files/FurniturePro_Report.pbix" download>Download .pbix</a></div>
+      </div>
+    </div>
+
+    <div class="proj">
+      <div class="n">12</div>
+      <div>
+        <div class="proj-head">
+          <h3>NLP Coursework — Text Preprocessing to Transformers</h3>
+          <div class="tags"><span class="tag flag">XLRI</span><span class="tag">NLP</span></div>
+        </div>
+        <p>Coursework notes and exercises spanning text preprocessing, vectorization, sentiment analysis, text classification, topic modelling, neural networks and transformer-based LLMs — the theoretical foundation behind the NLP gender-prediction model shipped at CarDekho.</p>
+        <div class="proj-links"><a href="files/NLP.pdf" download>Download notes (PDF)</a></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="addmore">
+    <h4>More projects coming</h4>
+    <p>This index is built to grow. Drop a new PDF, deck or notebook into the <span class="mono">/files</span> folder next to this page, copy one of the project blocks above, and it'll slot straight into the list — no rebuild needed.</p>
+  </div>
+</section>
+
+<section id="notes" class="wrap">
+  <div class="section-head"><h2>Course Notes</h2><span class="idx">04</span></div>
+  <p class="section-note">Personal study notes from the PGCBA coursework at XLRI — kept here as a reference library, separate from the graded project work above. Files live in a <span class="mono">/notes</span> folder next to this page.</p>
+  <div class="file-grid">
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Statistics for Business</span><a class="dl" href="notes/Statistics_for_Business.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">SQL</span><a class="dl" href="notes/SQL.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Machine Learning</span><a class="dl" href="notes/Machine_Learning.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Modeling for Business</span><a class="dl" href="notes/Modeling_for_Business.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Data Mining</span><a class="dl" href="notes/Data_Mining.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Machine Learning — ML</span><a class="dl" href="notes/Machine_Learning_ML.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Business Forecasting</span><a class="dl" href="notes/Business_Forecasting.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Topics in Business Analytics</span><a class="dl" href="notes/Topics_in_Business.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">NLP</span><a class="dl" href="notes/NLP_Notes.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Text Mining</span><a class="dl" href="notes/Text_Mining.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Big Data</span><a class="dl" href="notes/Big_Data.pdf" download>Download</a></div>
+    <div class="file"><span class="ftype">PDF</span><span class="fname">Data Mining — Applications</span><a class="dl" href="notes/Data_Mining_Applications.pdf" download>Download</a></div>
+  </div>
+  <div class="addmore">
+    <h4>Uploading your notes</h4>
+    <p>Create a folder named exactly <span class="mono">notes</span> next to <span class="mono">index.html</span>, and drop each file in with the matching filename shown above (e.g. save your SQL notes as <span class="mono">SQL.pdf</span>). If a filename doesn't match, that link will 404 — rename the file or edit the <span class="mono">href</span> in the HTML to match whatever you actually saved it as.</p>
+  </div>
+</section>
+
+<section id="skills" class="wrap">
+  <div class="section-head"><h2>Skills</h2><span class="idx">05</span></div>
+  <div class="skill-grid">
+    <div class="skill-col">
+      <h4>Analytics &amp; Data</h4>
+      <ul><li>Python</li><li>SQL</li><li>R</li><li>Excel</li><li>Google Apps Script</li><li>Orange, AnyLogic</li></ul>
+    </div>
+    <div class="skill-col">
+      <h4>BI &amp; Visualization</h4>
+      <ul><li>Power BI (DAX)</li><li>Tableau</li><li>Looker Studio</li><li>Google AppSheet</li><li>Matplotlib, Seaborn, Plotly</li></ul>
+    </div>
+    <div class="skill-col">
+      <h4>Machine Learning</h4>
+      <ul><li>Regression &amp; Classification</li><li>NLP</li><li>Clustering</li><li>Model Evaluation</li><li>Scikit-Learn, Gradient Boosting</li><li>Monte Carlo Simulation</li></ul>
+    </div>
+    <div class="skill-col">
+      <h4>Business Skills</h4>
+      <ul><li>ETL &amp; Feature Engineering</li><li>Hypothesis Testing</li><li>Stakeholder Management</li><li>KPI Design</li><li>Process Automation</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="education" class="wrap">
+  <div class="section-head"><h2>Education</h2><span class="idx">06</span></div>
+  <div class="edu">
+    <div class="edu-card">
+      <h4>Post Graduate Certificate, Business Analytics</h4>
+      <div class="when">XLRI, Jamshedpur · 2025 – 2026</div>
+      <p style="margin:0; font-size:.9rem; color:#333;">Batch PGCBA-6. Coursework in data mining, modelling for business analytics, NLP, graph databases and forecasting — several projects featured above.</p>
+    </div>
+    <div class="edu-card">
+      <h4>B.Com (Accounting &amp; Finance)</h4>
+      <div class="when">University of Calcutta, BESC College · 2017 – 2020</div>
+      <p style="margin:0; font-size:.9rem; color:#333;">Foundation in financial accounting and analysis, later extended into data-driven business analytics.</p>
+    </div>
+  </div>
+</section>
+
+<footer id="contact" class="wrap">
+  <div class="contact-row">
+    <div>
+      <h2>Let's talk data.</h2>
+      <p style="max-width:46ch; color:var(--muted); margin:0;">Open to Business Analyst, Strategy Consulting and BI roles, and to project collaborations in ML, NLP and analytics.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:kunalksh07@gmail.com">kunalksh07@gmail.com</a>
+      <a href="https://www.linkedin.com/in/kunalksh07" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/KunalKsh" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>Kunal Kaushal — Business Analyst</span>
+    <span>Gurgaon, India</span>
+  </div>
+</footer>
+
+</body>
+</html>
