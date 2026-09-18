@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Wheeler Insurance Distribution Optimization</title>
+    <!-- Use Tailwind CSS for a modern, responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for the dashboard visuals -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .section-header {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background-color: #e5e7eb;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .nav-link.active {
+            font-weight: bold;
+            color: #1d4ed8;
+            border-bottom: 2px solid #1d4ed8;
+        }
+        .chart-container {
+            height: 400px;
+            width: 100%;
+        }
+        input[type="number"], input[type="text"], input[type="checkbox"] {
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            width: 100%;
+        }
+        input[type="number"].narrow {
+            width: 80px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto p-6 lg:p-12">
+        <!-- Project Title and Nav Bar -->
+        <header class="bg-white rounded-xl shadow-md p-6 mb-8 sticky top-6 z-10">
+            <h1 class="text-4xl font-bold text-center text-blue-800">Two-Wheeler Insurance Optimization</h1>
+            <p class="text-center text-gray-600 mt-2">Prescriptive Analytics Project by Kunal Kaushal</p>
+            <nav class="mt-6 flex justify-center space-x-4 sm:space-x-6 overflow-x-auto whitespace-nowrap">
+                <a href="#section1" class="nav-link text-gray-700 hover:text-blue-600 transition-colors duration-200">Problem Description</a>
+                <a href="#section2" class="nav-link text-gray-700 hover:text-blue-600 transition-colors duration-200">The Model</a>
+                <a href="#section3" class="nav-link text-gray-700 hover:text-blue-600 transition-colors duration-200">Dynamic Inputs</a>
+                <a href="#section4" class="nav-link text-gray-700 hover:text-blue-600 transition-colors duration-200">Optimal Solution</a>
+                <a href="#dashboard-section" class="nav-link text-gray-700 hover:text-blue-600 transition-colors duration-200">Dashboard</a>
+            </nav>
+        </header>
+
+        <!-- Main Content Sections -->
+        <main>
+            <!-- SECTION 1: Problem Description -->
+            <section id="section1" class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <h2 class="section-header">1. Problem Description</h2>
+                <div class="space-y-4 text-gray-700">
+                    <p>
+                        In the two-wheeler insurance industry, our organization acts as a crucial intermediary between various insurers and a vast network of dealers. Each insurer offers different payout structures through their various branches, which are influenced by parameters like the vehicle's OEM (Original Equipment Manufacturer), RTO (Regional Transport Office), Body Type, and Fuel Type.
+                    </p>
+                    <p>
+                        The core challenge is to accurately and efficiently match each dealer with the most profitable insurer branch offer. This matching process must satisfy a series of technical constraints to ensure the validity of the policy, all while maximizing our overall profit. The prescriptive analytics model built for this project automates this complex assignment, moving away from an error-prone and non-scalable manual process.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 2: The Model -->
+            <section id="section2" class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <h2 class="section-header">2. The Model: Objective Function & Constraints</h2>
+                <div class="space-y-6 text-gray-700">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Objective Function</h3>
+                        <p>
+                            The primary goal is to maximize the total profit earned from all matched dealer-insurer pairs. This is formulated as a Mixed-Integer Linear Programming (MILP) problem.
+                        </p>
+                        <div class="bg-gray-100 rounded-lg p-4 mt-2">
+                            <pre class="whitespace-pre-wrap font-mono text-sm text-gray-800">Maximize Z = $$\sum_{i,j}(P_{j} \times PO_{i} - D_{j} - C)\cdot x_{ij}$$</pre>
+                            <ul class="list-disc list-inside mt-4 text-gray-600 text-sm space-y-1">
+                                <li>$x_{ij}$ = 1 if dealer $j$ is assigned to branch $i$, otherwise 0 (our decision variable).</li>
+                                <li>$P_j$ = Premium of dealer $j$.</li>
+                                <li>$PO_i$ = Payout percentage of branch $i$.</li>
+                                <li>$D_j$ = Minimum payout expectation of dealer $j$.</li>
+                                <li>$C$ = Fixed Commission Per Acquisition (CPA).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Core Constraints</h3>
+                        <p>The model must adhere to the following rules to ensure a valid and optimal solution:</p>
+                        <ul class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li><strong>RTO, OEM, Fuel, & Body Type Match:</strong> The dealer's vehicle attributes must be supported by the assigned insurer branch.</li>
+                            <li><strong>PO% > 0:</strong> The payout percentage must be positive.</li>
+                            <li><strong>Dealer Payout > Minimum:</strong> The calculated payout for the dealer must meet their minimum expectation.</li>
+                            <li><strong>Fixed CPA:</strong> A fixed cost of ₹200 is subtracted from each transaction's profit.</li>
+                            <li><strong>One Dealer per Branch:</strong> Each dealer can only be assigned to a single insurer branch.</li>
+                            <li><strong>Active Branches Only:</strong> Only insurer branches with a status of 'Active' are considered.</li>
+                            <li><strong>Total Margin ≥ 0:</strong> The final profit margin for any transaction must be non-negative.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SECTION 3: Dynamic Inputs -->
+            <section id="section3" class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <h2 class="section-header">3. Dynamic Inputs</h2>
+                <div class="space-y-6 text-gray-700">
+                    <p>
+                        This section contains all the input data for the optimization model. You can edit any of the values in the tables below and then click the "Recalculate" button to see the new optimal solution.
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <label for="cpa-input" class="text-xl font-medium text-gray-700">Fixed CPA (₹):</label>
+                        <input type="number" id="cpa-input" value="200" class="narrow">
+                    </div>
+                    <div class="table-container">
+                        <h4 class="text-xl font-medium text-gray-700 mt-4 mb-2">Dealers Data</h4>
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr><th>Dealer</th><th>RTO</th><th>OEM</th><th>Fuel</th><th>Body</th><th>Premium (₹)</th><th>Min Payout (₹)</th></tr>
+                            </thead>
+                            <tbody id="dealers-table-body">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <h4 class="text-xl font-medium text-gray-700 mt-6 mb-2">Branches Data</h4>
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr><th>Branch</th><th>Active</th><th>PO%</th><th>Allowed RTOs</th><th>Allowed OEMs</th><th>Fuel</th><th>Body</th></tr>
+                            </thead>
+                            <tbody id="branches-table-body">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <h4 class="text-xl font-medium text-gray-700 mt-6 mb-2">Feasibility Matrix (0 = Infeasible, 1 = Feasible)</h4>
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr><th class="w-32">Dealer \ Branch</th><th class="w-20">B1</th><th class="w-20">B2</th><th class="w-20">B3</th><th class="w-20">B4</th><th class="w-20">B5 (Inactive)</th></tr>
+                            </thead>
+                            <tbody id="feasibility-table-body">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="recalculate-btn" class="mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Recalculate Optimal Solution
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 4: Optimal Solution (Results) -->
+            <section id="section4" class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <h2 class="section-header">4. Optimal Solution</h2>
+                <div class="space-y-4 text-gray-700">
+                    <p>
+                        Based on the data you provided, the solver generated the following optimal assignments, maximizing the total profit for the organization.
+                    </p>
+                    <div class="table-container">
+                        <table class="w-full text-sm" id="results-table">
+                            <thead>
+                                <tr><th>Dealer</th><th>Assigned Branch</th><th>Premium (₹)</th><th>PO%</th><th>Dealer Payout (₹)</th><th>CPA (₹)</th><th>Margin (₹)</th></tr>
+                            </thead>
+                            <tbody id="results-table-body">
+                                <!-- This will be dynamically populated -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray-200 font-bold">
+                                    <td colspan="5"></td>
+                                    <td>TOTAL PROFIT</td>
+                                    <td id="total-profit">0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4.5: Smart Dashboard -->
+            <section id="dashboard-section" class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <h2 class="section-header">4.5. Smart Dashboard</h2>
+                <div class="space-y-6 text-gray-700">
+                    <p>
+                        This smart dashboard provides a visual summary of the optimization results, allowing stakeholders to quickly understand the distribution and profitability of the assignments.
+                    </p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Profitability Breakdown</h3>
+                            <div class="chart-container">
+                                <canvas id="profitability-chart"></canvas>
+                            </div>
+                            <p class="mt-4 text-sm text-gray-600">
+                                This chart shows the percentage contribution of each dealer's margin to the total project profit. It highlights which assignments are the most valuable.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Assignments by Branch</h3>
+                            <div class="chart-container">
+                                <canvas id="assignments-chart"></canvas>
+                            </div>
+                            <p class="mt-4 text-sm text-gray-600">
+                                This bar chart shows the number of dealers assigned to each active insurer branch. It provides a clear visual of the workload distribution among the branches.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- GitHub Link -->
+    <div class="mt-8 text-center">
+         <a href="https://github.com/KunalKsh/Prescriptive-Analytics-Project" class="inline-block py-3 px-6 bg-gray-800 text-white font-semibold rounded-lg shadow-lg hover:bg-gray-700 transition-colors duration-200" target="_blank">
+            Find Original Files on GitHub
+         </a>
+         </div>
+        </section>
+     </main>
+    </div>
+
+<!-- JavaScript for the Test Scenario and Dashboard -->
+<script>
+        // --- INITIAL DATA (The starting point for the dynamic tables) ---
+        const INITIAL_DATA = {
+            cpa: 200,
+            dealers: [
+                { id: 'D1', rto: 'MH01', oem: 'Honda', fuel: 'Petrol', body: 'Scooter', premium: 6000, minPayout: 1800 },
+                { id: 'D2', rto: 'DL01', oem: 'TVS', fuel: 'Petrol', body: 'Bike', premium: 7500, minPayout: 2000 },
+                { id: 'D3', rto: 'KA01', oem: 'Bajaj', fuel: 'Petrol', body: 'Bike', premium: 5000, minPayout: 1500 },
+                { id: 'D4', rto: 'UP32', oem: 'Hero', fuel: 'Petrol', body: 'Scooter', premium: 6800, minPayout: 1700 },
+                { id: 'D5', rto: 'GJ01', oem: 'Yamaha', fuel: 'Electric', body: 'Bike', premium: 7200, minPayout: 2100 },
+                { id: 'D6', rto: 'BR10', oem: 'Suzuki', fuel: 'Petrol', body: 'Scooter', premium: 5500, minPayout: 1600 },
+                { id: 'D7', rto: 'MH02', oem: 'Royal Enfield', fuel: 'Petrol', body: 'Bike', premium: 6400, minPayout: 1900 },
+            ],
+            branches: [
+                { id: 'B1', active: true, po: 0.40, rtos: 'MH01, MH02, DL01, KA01', oems: 'All', fuels: 'Petrol', bodies: 'Bike, Scooter' },
+                { id: 'B2', active: true, po: 0.35, rtos: 'GJ01, MH01, BR10', oems: 'Hero, Honda, TVS', fuels: 'Petrol', bodies: 'Bike' },
+                { id: 'B3', active: true, po: 0.42, rtos: 'All', oems: 'All', fuels: 'Petrol, Electric', bodies: 'Bike, Scooter' },
+                { id: 'B4', active: true, po: 0.38, rtos: 'UP32, BR10, DL01', oems: 'Bajaj, Yamaha, Suzuki', fuels: 'Petrol', bodies: 'Bike, Scooter' },
+                { id: 'B5', active: false, po: 0.37, rtos: 'MH02, KA01', oems: 'Honda, Royal Enfield', fuels: 'Petrol', bodies: 'Bike' }
+            ],
+            feasibility: [
+                [1, 0, 1, 0, 0],
+                [1, 1, 1, 1, 0],
+                [1, 1, 1, 1, 0],
+                [0, 0, 1, 1, 0],
+                [0, 0, 1, 1, 0],
+                [0, 1, 1, 1, 0],
+                [1, 0, 1, 0, 0]
+            ]
+        };
+
+        // Global chart instances
+        let profitabilityChart;
+        let assignmentsChart;
+
+        // --- CORE LOGIC ---
+
+        // Function to check feasibility based on constraints
+        function checkFeasibility(dealer, branch, cpa) {
+            // Constraint 9: Only active branches
+            if (!branch.active) return false;
+
+            // Constraint 1: RTO match
+            const isRtoMatch = branch.rtos.toLowerCase() === 'all' || branch.rtos.split(',').map(s => s.trim().toLowerCase()).includes(dealer.rto.toLowerCase());
+            if (!isRtoMatch) return false;
+
+            // Constraint 2: OEM match
+            const isOemMatch = branch.oems.toLowerCase() === 'all' || branch.oems.split(',').map(s => s.trim().toLowerCase()).includes(dealer.oem.toLowerCase());
+            if (!isOemMatch) return false;
+
+            // Constraint 3: Fuel Type match
+            const isFuelMatch = branch.fuels.split(',').map(s => s.trim().toLowerCase()).includes(dealer.fuel.toLowerCase());
+            if (!isFuelMatch) return false;
+
+            // Constraint 4: Body Type match
+            const isBodyMatch = branch.bodies.split(',').map(s => s.trim().toLowerCase()).includes(dealer.body.toLowerCase());
+            if (!isBodyMatch) return false;
+
+            // Constraint 5: PO% > 0
+            if (branch.po <= 0) return false;
+
+            // Constraint 10: Margin >= 0
+            const calculatedMargin = (dealer.premium * branch.po) - dealer.minPayout - cpa;
+            if (calculatedMargin < 0) return false;
+
+            // All checks passed
+            return true;
+        }
+
+        // Function to calculate margin
+        function calculateMargin(dealer, branch, cpa) {
+            return (dealer.premium * branch.po) - dealer.minPayout - cpa;
+        }
+
+        // Function to solve the MILP (simplified)
+        function solveOptimization(dealers, branches, feasibilityMatrix, cpa) {
+            const assignmentResults = [];
+            let totalProfit = 0;
+
+            dealers.forEach((dealer, dealerIndex) => {
+                let bestMatch = null;
+                let maxMargin = -Infinity;
+
+                branches.forEach((branch, branchIndex) => {
+                    // Check if assignment is feasible based on the user-provided matrix
+                    if (feasibilityMatrix[dealerIndex][branchIndex] === 1) {
+                        // Check if the assignment is technically feasible
+                        if (checkFeasibility(dealer, branch, cpa)) {
+                            const margin = calculateMargin(dealer, branch, cpa);
+                            if (margin > maxMargin) {
+                                maxMargin = margin;
+                                bestMatch = branch;
+                            }
+                        }
+                    }
+                });
+
+                if (bestMatch) {
+                    const finalMargin = calculateMargin(dealer, bestMatch, cpa);
+                    assignmentResults.push({
+                        dealer: dealer.id,
+                        branch: bestMatch.id,
+                        premium: dealer.premium,
+                        po: bestMatch.po,
+                        payout: (dealer.premium * bestMatch.po),
+                        cpa: cpa,
+                        margin: finalMargin
+                    });
+                    totalProfit += finalMargin;
+                } else {
+                    assignmentResults.push({
+                        dealer: dealer.id,
+                        branch: 'None',
+                        premium: dealer.premium,
+                        po: 0,
+                        payout: 0,
+                        cpa: 0,
+                        margin: 0
+                    });
+                }
+            });
+
+            return { assignments: assignmentResults, totalProfit: totalProfit };
+        }
+
+        // --- DYNAMIC RENDERING AND DATA READING ---
+
+        // Function to render the dealers table with inputs
+        function renderDealersTable(dealers) {
+            const tableBody = document.getElementById('dealers-table-body');
+            tableBody.innerHTML = '';
+            dealers.forEach(dealer => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" value="${dealer.id}" readonly></td>
+                    <td><input type="text" value="${dealer.rto}"></td>
+                    <td><input type="text" value="${dealer.oem}"></td>
+                    <td><input type="text" value="${dealer.fuel}"></td>
+                    <td><input type="text" value="${dealer.body}"></td>
+                    <td><input type="number" value="${dealer.premium}"></td>
+                    <td><input type="number" value="${dealer.minPayout}"></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Function to render the branches table with inputs
+        function renderBranchesTable(branches) {
+            const tableBody = document.getElementById('branches-table-body');
+            tableBody.innerHTML = '';
+            branches.forEach(branch => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" value="${branch.id}" readonly></td>
+                    <td><input type="checkbox" ${branch.active ? 'checked' : ''}></td>
+                    <td><input type="number" step="0.01" value="${branch.po}"></td>
+                    <td><input type="text" value="${branch.rtos}"></td>
+                    <td><input type="text" value="${branch.oems}"></td>
+                    <td><input type="text" value="${branch.fuels}"></td>
+                    <td><input type="text" value="${branch.bodies}"></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Function to render the feasibility table with inputs
+        function renderFeasibilityTable(dealers, branches, feasibility) {
+            const tableBody = document.getElementById('feasibility-table-body');
+            const tableHeadRow = tableBody.previousElementSibling.querySelector('tr');
+            
+            // Update table headers dynamically
+            const branchHeaders = branches.map(b => `<th class="w-20">${b.id}</th>`).join('');
+            tableHeadRow.innerHTML = `<th class="w-32">Dealer \\ Branch</th>${branchHeaders}`;
+
+            tableBody.innerHTML = ''; // Clear existing rows
+            dealers.forEach((dealer, dealerIndex) => {
+                const row = document.createElement('tr');
+                let rowContent = `<td>${dealer.id}</td>`;
+                branches.forEach((branch, branchIndex) => {
+                    const value = feasibility[dealerIndex] && feasibility[dealerIndex][branchIndex] !== undefined ? feasibility[dealerIndex][branchIndex] : 0;
+                    rowContent += `<td><input type="number" min="0" max="1" value="${value}" class="w-16 text-center border rounded-md" data-dealer="${dealerIndex}" data-branch="${branchIndex}"></td>`;
+                });
+                row.innerHTML = rowContent;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to read all data from the HTML tables
+        function readAllDynamicData() {
+            const dealers = [];
+            document.querySelectorAll('#dealers-table-body tr').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                dealers.push({
+                    id: inputs[0].value,
+                    rto: inputs[1].value,
+                    oem: inputs[2].value,
+                    fuel: inputs[3].value,
+                    body: inputs[4].value,
+                    premium: parseFloat(inputs[5].value),
+                    minPayout: parseFloat(inputs[6].value),
+                });
+            });
+
+            const branches = [];
+            document.querySelectorAll('#branches-table-body tr').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                branches.push({
+                    id: inputs[0].value,
+                    active: inputs[1].checked,
+                    po: parseFloat(inputs[2].value),
+                    rtos: inputs[3].value,
+                    oems: inputs[4].value,
+                    fuels: inputs[5].value,
+                    bodies: inputs[6].value,
+                });
+            });
+
+            const feasibility = [];
+            document.querySelectorAll('#feasibility-table-body tr').forEach(row => {
+                const rowFeasibility = [];
+                const inputs = row.querySelectorAll('input');
+                inputs.forEach(input => {
+                    rowFeasibility.push(parseInt(input.value, 10));
+                });
+                feasibility.push(rowFeasibility);
+            });
+
+            const cpa = parseFloat(document.getElementById('cpa-input').value);
+
+            return { cpa, dealers, branches, feasibility };
+        }
+
+        // Function to update the results table
+        function updateResultsTable(results) {
+            const tableBody = document.getElementById('results-table-body');
+            tableBody.innerHTML = '';
+            results.assignments.forEach(assignment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${assignment.dealer}</td>
+                    <td>${assignment.branch}</td>
+                    <td>${assignment.premium}</td>
+                    <td>${(assignment.po * 100).toFixed(2)}%</td>
+                    <td>${assignment.payout.toFixed(2)}</td>
+                    <td>${assignment.cpa}</td>
+                    <td>${assignment.margin.toFixed(2)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            document.getElementById('total-profit').textContent = results.totalProfit.toFixed(2);
+        }
+
+        // Function to update the charts
+        function updateCharts(results) {
+            const profitabilityData = results.assignments.map(d => d.margin);
+            const profitabilityLabels = results.assignments.map(d => d.dealer);
+
+            const branchAssignments = results.assignments.reduce((acc, curr) => {
+                if (curr.branch !== 'None') {
+                    acc[curr.branch] = (acc[curr.branch] || 0) + 1;
+                }
+                return acc;
+            }, {});
+            const assignmentLabels = Object.keys(branchAssignments);
+            const assignmentData = Object.values(branchAssignments);
+
+            // Update Profitability Chart
+            if (profitabilityChart) {
+                profitabilityChart.data.labels = profitabilityLabels;
+                profitabilityChart.data.datasets[0].data = profitabilityData;
+                profitabilityChart.update();
+            } else {
+                initializeCharts(profitabilityLabels, profitabilityData, assignmentLabels, assignmentData);
+            }
+
+            // Update Assignments Chart
+            if (assignmentsChart) {
+                assignmentsChart.data.labels = assignmentLabels;
+                assignmentsChart.data.datasets[0].data = assignmentData;
+                assignmentsChart.update();
+            } else {
+                initializeCharts(profitabilityLabels, profitabilityData, assignmentLabels, assignmentData);
+            }
+        }
+        
+        function initializeCharts(profitabilityLabels, profitabilityData, assignmentLabels, assignmentData) {
+            const profitabilityCtx = document.getElementById('profitability-chart');
+            const assignmentsCtx = document.getElementById('assignments-chart');
+            const chartColors = ['#4A5568', '#4299E1', '#F6AD55', '#38B2AC', '#E53E3E', '#A0AEC0', '#ED8936'];
+            
+            if (profitabilityCtx) {
+                profitabilityChart = new Chart(profitabilityCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: profitabilityLabels,
+                        datasets: [{
+                            label: 'Margin Contribution',
+                            data: profitabilityData,
+                            backgroundColor: chartColors,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        const value = context.parsed;
+                                        const total = context.dataset.data.reduce((sum, current) => sum + current, 0);
+                                        const percentage = ((value / total) * 100).toFixed(2);
+                                        label += `₹${value.toFixed(2)} (${percentage}%)`;
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (assignmentsCtx) {
+                assignmentsChart = new Chart(assignmentsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: assignmentLabels,
+                        datasets: [{
+                            label: 'Number of Assignments',
+                            data: assignmentData,
+                            backgroundColor: '#4299E1',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Assignments'
+                                },
+                                ticks: {
+                                    precision: 0
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Insurer Branch'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Main function to run everything
+        function recalculateAndRender() {
+            const { cpa, dealers, branches, feasibility } = readAllDynamicData();
+            const results = solveOptimization(dealers, branches, feasibility, cpa);
+            updateResultsTable(results);
+            updateCharts(results);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial render of all dynamic tables
+            renderDealersTable(INITIAL_DATA.dealers);
+            renderBranchesTable(INITIAL_DATA.branches);
+            renderFeasibilityTable(INITIAL_DATA.dealers, INITIAL_DATA.branches, INITIAL_DATA.feasibility);
+            document.getElementById('cpa-input').value = INITIAL_DATA.cpa;
+            
+            // Initial calculation and chart setup
+            recalculateAndRender();
+
+            // Recalculate button click handler
+            document.getElementById('recalculate-btn').addEventListener('click', () => {
+                recalculateAndRender();
+            });
+
+            // Highlight active nav link on scroll
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.href.includes(currentSection)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
