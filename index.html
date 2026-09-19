@@ -593,7 +593,7 @@
         <button class="modal-close" onclick="closeFile()" aria-label="Close">✕</button>
       </div>
     </div>
-    <iframe id="fileFrame" src="" title="File preview"></iframe>
+    <iframe id="fileFrame" src="" title="File preview" width="100%" height="100%"></iframe>
     <p id="modalNote" style="display:none; margin:0; padding:10px 18px; font-size:.8rem; color:#6E6B60; border-top:1px solid #E4DFD0;">If the preview doesn't load (common for PowerPoint files viewed before this site is publicly deployed), use Download instead.</p>
   </div>
 </div>
@@ -604,6 +604,13 @@
     document.getElementById('modalDownload').setAttribute('href', path);
     var frame = document.getElementById('fileFrame');
     var note = document.getElementById('modalNote');
+    var modal = document.getElementById('fileModal');
+    // Show the modal FIRST so it has real dimensions, THEN load the file.
+    // Loading the file into a still-hidden (zero-size) modal is what caused
+    // the PDF viewer to render as a tiny locked box with blank space around it.
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    void modal.offsetHeight; // force layout so the modal's size is committed
     if(type === 'office'){
       var abs = window.location.href.replace(/[^/]*$/, '') + path;
       frame.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(abs) + '&embedded=true';
@@ -612,8 +619,6 @@
       frame.src = path;
       note.style.display = 'none';
     }
-    document.getElementById('fileModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
   }
   function openResume(e){
     if(e) e.preventDefault();
