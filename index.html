@@ -150,6 +150,51 @@
   .contact-links{ display:flex; gap:26px; font-size:.95rem; }
   .contact-links a{ text-decoration:none; color:var(--invert); border-bottom:1px solid var(--brass-soft); }
   .fine{ margin-top:48px; color:var(--muted-invert); font-size:.8rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px solid var(--line-dark); padding-top:20px; }
+
+  /* RESUME MODAL */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; z-index:100;
+    background:rgba(15,27,46,.72);
+    padding:32px 16px;
+    align-items:center; justify-content:center;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--card); width:100%; max-width:880px; height:88vh;
+    display:flex; flex-direction:column;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+  .modal-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px; border-bottom:1px solid var(--line);
+    font-family:'Newsreader', serif; font-size:1.02rem; color:var(--ink);
+  }
+  .modal-actions{ display:flex; align-items:center; gap:16px; }
+  .modal-dl{ font-family:'IBM Plex Sans', sans-serif; font-size:.85rem; text-decoration:none; color:var(--navy); border:1px solid var(--brass-soft); padding:6px 14px; }
+  .modal-dl:hover{ background:var(--brass-soft); color:#fff; }
+  .modal-close{ background:none; border:none; font-size:1.1rem; cursor:pointer; color:var(--muted); line-height:1; padding:4px; }
+  .modal-close:hover{ color:var(--ink); }
+  #resumeFrame{ border:none; width:100%; flex:1; background:#525659; }
+  @media (max-width:640px){ .modal-box{ height:92vh; } }
+  /* WORK — VISUAL CARDS */
+  .work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .pcard{ background:var(--card); border:1px solid var(--line); display:flex; flex-direction:column; }
+  .pcard .thumb-wrap{ position:relative; width:100%; aspect-ratio:900/540; overflow:hidden; border-bottom:1px solid var(--line); background:#0F1B2E; }
+  .pcard .thumb-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .pcard .idx-badge{ position:absolute; top:10px; left:10px; background:rgba(15,27,46,.82); color:var(--brass-soft); font-family:'IBM Plex Mono',monospace; font-size:.72rem; padding:3px 8px; }
+  .pcard .body{ padding:20px 22px 22px; display:flex; flex-direction:column; flex:1; }
+  .pcard h3{ margin:0 0 8px; font-size:1.12rem; font-weight:500; line-height:1.3; }
+  .pcard .tags{ margin-bottom:12px; }
+  .pl-row{ display:flex; gap:8px; margin-bottom:8px; align-items:baseline; }
+  .pl-row .lbl{ font-family:'IBM Plex Mono',monospace; font-size:.66rem; color:var(--brass); text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; padding-top:2px; min-width:52px; }
+  .pl-row p{ margin:0; font-size:.86rem; color:#2B2F33; line-height:1.5; }
+  .pcard-foot{ margin-top:auto; padding-top:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .pcard-links{ display:flex; gap:16px; font-size:.83rem; }
+  .pcard-links button.linklike, .pcard-links a{ background:none; border:none; padding:0; font:inherit; cursor:pointer; color:var(--navy); border-bottom:1px solid var(--brass-soft); text-decoration:none; }
+  .pcard-links button.linklike:hover, .pcard-links a:hover{ color:var(--brass); }
+  .pcard .stat-pill{ font-size:.74rem; color:var(--muted); }
+  .pcard .stat-pill b{ color:var(--brass); font-family:'Newsreader',serif; font-size:.95rem; }
+  @media (max-width:820px){ .work-grid{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -176,6 +221,7 @@
   <p class="lead">Three years spent building the pipelines, models and dashboards that sit between raw data and a business call — at CarDekho Southeast Asia and, before that, Aegis Covenant. The work has ranged from cross-sell scoring to channel ROI and reconciliation; the throughline is the same: understand the business question first, then let the data answer it. Looking ahead, I'm drawn toward roles where that same discipline shapes strategy earlier in the process, not just after the data is already collected.</p>
   <div class="cta-row">
     <a class="btn primary" href="#work">See selected work</a>
+    <a class="btn ghost" href="#" onclick="openResume(event)">View résumé</a>
     <a class="btn ghost" href="KunalKaushalResume.pdf" download>Download résumé</a>
     <a class="btn ghost" href="https://www.linkedin.com/in/kunalksh07" target="_blank" rel="noopener">LinkedIn</a>
     <a class="btn ghost" href="https://github.com/KunalKsh" target="_blank" rel="noopener">GitHub</a>
@@ -253,178 +299,212 @@
 
 <section id="work" class="wrap">
   <div class="section-head"><h2>Selected Work</h2><span class="idx">03</span></div>
-  <p class="section-note">Twelve projects spanning production ML at CarDekho, an insurance analytics tenure at Aegis, and the applied coursework from XLRI Jamshedpur's PGCBA. Files for each are in the Downloads section below.</p>
+  <p class="section-note">Twelve projects spanning production ML at CarDekho, an insurance analytics tenure at Aegis, and applied coursework from XLRI Jamshedpur's PGCBA. Every card opens the real file — view inline or download.</p>
 
-  <div class="proj-list">
+  <div class="work-grid">
 
-    <div class="proj">
-      <div class="n">01</div>
-      <div>
-        <div class="proj-head">
-          <h3>Cross-Selling Lead Pipeline</h3>
-          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">Python · SQL · NLP</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">01</span><img src="img/Cross%20selling.png" alt="Cross-Selling Lead Pipeline architecture"></div>
+      <div class="body">
+        <h3>Cross-Selling Lead Pipeline</h3>
+        <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">Python · SQL · NLP</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Millions of customer records sat fragmented across databases with no unified view to cross-sell against.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>12-step pipeline: SQL consolidation → NLP gender prediction (TF-IDF + Logistic Regression) → Random Forest lead scoring → rule-based product allocation → stratified 36K sample.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill"><b>96.8%</b> model accuracy</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Cross_Selling_Lead_Pipeline.pdf','Cross-Selling Lead Pipeline','pdf')">View</button>
+            <a href="Cross_Selling_Lead_Pipeline.pdf" download>Download</a>
+          </div>
         </div>
-        <p>Built a 12-step, end-to-end pipeline that consolidates 7.5M raw SQL records into a single customer view, predicts missing gender via a TF-IDF + Logistic Regression NLP model on Philippine names, scores lead quality with a Random Forest, and allocates one of three products per customer using a city-tier rule matrix — output as a stratified 36K-record, bias-free dataset ready for A/B testing.</p>
-        <div class="metrics">
-          <div class="metric"><b>96.8%</b>model accuracy (gender classifier)</div>
-          <div class="metric"><b>7.5M → 36K</b>raw records to outreach-ready leads</div>
-          <div class="metric"><b>Zero</b>overlap across A/B test buckets</div>
-        </div>
-        <div class="proj-links"><a href="Cross_Selling_Lead_Pipeline.pdf" download>Download deck (PDF)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">02</div>
-      <div>
-        <div class="proj-head">
-          <h3>HMO Insurance AI Advisor</h3>
-          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">FastAPI · Gemini API · SQLite</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">02</span><img src="img/Hmo%20agent.png" alt="HMO Insurance AI Advisor architecture"></div>
+      <div class="body">
+        <h3>HMO Insurance AI Advisor</h3>
+        <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">FastAPI · Gemini · SQLite</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Customers needed personalized HMO plan guidance on demand, without waiting on a live sales agent.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>FastAPI + orchestration layer blending conversation state, deterministic Excel eligibility rules and Gemini-generated explanations, backed by persistent SQLite memory for audit and analytics.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill">Modular agent architecture</span>
+          <div class="pcard-links">
+            <a href="https://drive.google.com/drive/folders/1snTDnibBVI6KKHPvfqh82FbQlOS60A8f" target="_blank" rel="noopener">Watch demo</a>
+          </div>
         </div>
-        <p>An AI-powered HMO insurance advisor built on a modular agent architecture: a FastAPI web layer receives customer queries, validates requests and manages sessions, then hands conversation to an orchestration layer that blends conversation history, customer requirements, business rules and LLM-generated responses. Conversation-state management tracks employee count, budget, industry, coverage needs and renewal details across turns. A deterministic business layer filters eligible plans from structured Excel plan data, while Gemini handles natural-language explanation and asks follow-up questions when information is missing. Separate SQLite databases persist user profiles, requirements and conversation history for auditability and analytics. The architecture also supports tool calling, prompt building, recommendation gating, error handling, logging and token monitoring — built with room to extend into RAG, vector search, multi-agent workflows and CRM integration.</p>
-        <div class="proj-links"><a href="https://drive.google.com/drive/folders/1snTDnibBVI6KKHPvfqh82FbQlOS60A8f" target="_blank" rel="noopener">Watch demo video</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">03</div>
-      <div>
-        <div class="proj-head">
-          <h3>Graph Databases in Philippine Vehicle Insurance</h3>
-          <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">Industry Research</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">03</span><img src="img/Graph%20db.png" alt="Graph database fraud ring diagram"></div>
+      <div class="body">
+        <h3>Graph Databases in PH Vehicle Insurance</h3>
+        <div class="tags"><span class="tag flag">CarDekho</span><span class="tag">Industry Research</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Relational SQL joins can't surface hidden fraud-ring relationships between claims, drivers and agents.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>Proposes a graph-database model — nodes, edges, index-free adjacency — for real-time fraud link analysis and commission-hierarchy tracking.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill">Fraud &amp; hierarchy analytics</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Graph_Databases_PH_Insurance.pdf','Graph Databases in PH Vehicle Insurance','pdf')">View</button>
+            <a href="Graph_Databases_PH_Insurance.pdf" download>Download</a>
+          </div>
         </div>
-        <p>An industry analysis proposing graph databases (nodes, edges, index-free adjacency) as a fraud-detection and commission-hierarchy tool for Philippine vehicle insurers — mapping how shared mobile numbers, plate numbers and lead sources can reveal staged-accident fraud rings that relational SQL joins miss at scale.</p>
-        <div class="proj-links"><a href="Graph_Databases_PH_Insurance.pdf" download>Download report (PDF)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">04</div>
-      <div>
-        <div class="proj-head">
-          <h3>Two-Wheeler Insurance Distribution Optimization</h3>
-          <div class="tags"><span class="tag">Prescriptive Analytics</span><span class="tag">Interactive</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">04</span><img src="img/Two%20wheeler.png" alt="Two-wheeler insurance distribution optimization"></div>
+      <div class="body">
+        <h3>Two-Wheeler Insurance Distribution Optimization</h3>
+        <div class="tags"><span class="tag">Prescriptive Analytics</span><span class="tag">Interactive</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Distribution budget was spread evenly across regions, ignoring demand density and margin.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>A constrained optimization model recommending allocation weights per region, delivered as a live interactive scenario tool.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill">Live scenario dashboard</span>
+          <div class="pcard-links">
+            <a href="two_wheeler_insurance_optimization.html" target="_blank" rel="noopener">Open tool</a>
+          </div>
         </div>
-        <p>A prescriptive optimization model for two-wheeler insurance distribution, delivered as a standalone interactive report — problem framing, model formulation, and a scenario dashboard that lets a reader adjust inputs and see the recommended allocation update live.</p>
-        <div class="proj-links"><a href="two_wheeler_insurance_optimization.html" target="_blank">Open interactive report</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">05</div>
-      <div>
-        <div class="proj-head">
-          <h3>Marketing Channel Effectiveness Study</h3>
-          <div class="tags"><span class="tag flag">XLRI · Data Mining</span><span class="tag">K-Means · Decision Tree</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">05</span><img src="img/Marketing%20channel.png" alt="K-Means elbow clustering chart"></div>
+      <div class="body">
+        <h3>Marketing Channel Effectiveness Study</h3>
+        <div class="tags"><span class="tag flag">XLRI · Data Mining</span><span class="tag">K-Means · Decision Tree</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Marketing spend was allocated by acquisition volume, not by the value of the customers each channel actually brought in.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>K-Means clustering (validated via elbow &amp; silhouette, k=4) on ROI and margin, then a Decision Tree mapping channels to the resulting value segments.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill"><b>674</b> top-segment ROI</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Marketing_Channel_Effectiveness_Study.pdf','Marketing Channel Effectiveness Study','pdf')">View</button>
+            <a href="Marketing_Channel_Effectiveness_Study.pdf" download>Download</a>
+          </div>
         </div>
-        <p>With Deepika Rohra and Sneha Jacob. Used K-Means clustering (validated via hierarchical clustering, elbow and silhouette methods, k=4) to segment customers by ROI, profit margin and cost-per-conversion, then trained a Decision Tree to map acquisition channels to the resulting value segments — reframing marketing spend decisions around customer value instead of acquisition volume.</p>
-        <div class="metrics">
-          <div class="metric"><b>674 ROI</b>top segment ("ROI Powerhouse")</div>
-          <div class="metric"><b>100%</b>Decision Tree channel-classification accuracy</div>
-        </div>
-        <div class="proj-links"><a href="Marketing_Channel_Effectiveness_Study.pdf" download>Download deck (PDF)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">06</div>
-      <div>
-        <div class="proj-head">
-          <h3>Modelling for Business Analytics: Lead Source &amp; Response Time</h3>
-          <div class="tags"><span class="tag flag">XLRI</span><span class="tag">R · Logistic Regression · ANOVA</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">06</span><img src="img/Mba%20analytics.png" alt="Response time vs lead score regression chart"></div>
+      <div class="body">
+        <h3>Modelling for Business Analytics: Lead Source &amp; Response Time</h3>
+        <div class="tags"><span class="tag flag">XLRI</span><span class="tag">R · Logistic Regression</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Unclear whether lead source or dealer responsiveness was the real driver of conversion.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>Chi-square, ANOVA and two logistic regression models tested against CarDekho SEA lead data, validated with an ROC/AUC curve.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill"><b>−4%</b> odds per hour of delay</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Modelling_for_Business_Analytics.pdf','Modelling for Business Analytics','pdf')">View</button>
+            <a href="Modelling_for_Business_Analytics.pdf" download>Download</a>
+          </div>
         </div>
-        <p>A full hypothesis-testing and regression study on CarDekho SEA lead data — chi-square and ANOVA tests, two logistic regression models, and an ROC-validated model showing that lead source has no significant effect on conversion, but every additional hour of dealer response delay cuts conversion odds by ~4%.</p>
-        <div class="metrics">
-          <div class="metric"><b>–4%</b>conversion odds per hour of delay</div>
-          <div class="metric"><b>AUC 0.657</b>enhanced logistic model</div>
-        </div>
-        <div class="proj-links"><a href="Modelling_for_Business_Analytics.pdf" download>Download report (PDF)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">07</div>
-      <div>
-        <div class="proj-head">
-          <h3>Predicting Movie Ratings with Machine Learning</h3>
-          <div class="tags"><span class="tag">Regression · Recommender Systems</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">07</span><img src="img/Predictive%20modeling.png" alt="Movie rating distribution histogram"></div>
+      <div class="body">
+        <h3>Predicting Movie Ratings with Machine Learning</h3>
+        <div class="tags"><span class="tag">Regression</span><span class="tag">Recommender Systems</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Large content catalogs need personalized rating predictions to drive recommendations, not just popularity ranking.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>Benchmarked Linear Regression, Random Forest and Gradient Boosting on MovieLens with 24 engineered features, validated via 10-fold cross-validation.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill"><b>R² 0.424</b> · ±0.598★ MAE</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Predicting_Movie_Ratings.pdf','Predicting Movie Ratings','pdf')">View</button>
+            <a href="Predicting_Movie_Ratings.pdf" download>Download</a>
+          </div>
         </div>
-        <p>Built and benchmarked Linear Regression, Random Forest and Gradient Boosting regressors on the MovieLens dataset (100K ratings, 610 users, 9,742 movies) with 24 engineered user/movie/genre features, to power a ratings-prediction layer for a recommendation engine — validated with 10-fold cross-validation and framed as a cold-start and personalization solution.</p>
-        <div class="metrics">
-          <div class="metric"><b>R² 0.424</b>Gradient Boosting (final model)</div>
-          <div class="metric"><b>±0.598</b>stars mean absolute error</div>
-        </div>
-        <div class="proj-links"><a href="Predicting_Movie_Ratings.pdf" download>Download report (PDF)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">08</div>
-      <div>
-        <div class="proj-head">
-          <h3>Data Mining: Diabetes Risk Classification &amp; Clustering</h3>
-          <div class="tags"><span class="tag flag">XLRI · Data Mining</span><span class="tag">Naive Bayes · Decision Tree · k-NN</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">08</span><img src="img/Data%20Mining.png" alt="Classifier performance comparison bar chart"></div>
+      <div class="body">
+        <h3>Data Mining: Diabetes Risk Classification &amp; Clustering</h3>
+        <div class="tags"><span class="tag flag">XLRI · Data Mining</span><span class="tag">Naive Bayes · k-NN</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>An 86% class imbalance hid how well any model could actually catch at-risk diabetic patients.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>ROSE oversampling plus a three-way classifier comparison (k-NN, Naive Bayes, Decision Tree), then k-means clustering to isolate a high-risk health cohort.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill"><b>0.70</b> recall after balancing</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Data_Mining_Diabetes_Assignment.pdf','Data Mining: Diabetes Assignment','pdf')">View</button>
+            <a href="Data_Mining_Diabetes_Assignment.pdf" download>Download</a>
+          </div>
         </div>
-        <p>Analyzed a 32K-record diabetes dataset with a class-imbalance-aware modeling approach — ROSE oversampling to rebalance classes, a three-way classifier comparison (k-NN, Naive Bayes, Decision Tree), and k-means clustering on BMI/Age/General Health that isolated a high-risk cohort with ~35% diabetes prevalence versus ~5% in the healthiest cluster.</p>
-        <div class="metrics">
-          <div class="metric"><b>0.70</b>recall after class balancing (vs 0.35 baseline)</div>
-          <div class="metric"><b>Decision Tree</b>best F1 / AUC-ROC overall</div>
-        </div>
-        <div class="proj-links"><a href="Data_Mining_Diabetes_Assignment.pdf" download>Download report (PDF)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">09</div>
-      <div>
-        <div class="proj-head">
-          <h3>Capstone: Organ-Wise Disease Risk Prediction</h3>
-          <div class="tags"><span class="tag flag">XLRI · Capstone</span><span class="tag">Logistic Regression · Random Forest · GBM</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">09</span><img src="img/Capstone%20Project.png" alt="Patient risk profile dashboard concept"></div>
+      <div class="body">
+        <h3>Capstone: Organ-Wise Disease Risk Prediction</h3>
+        <div class="tags"><span class="tag flag">XLRI · Capstone</span><span class="tag">Logistic Regression · GBM</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>A single overall health score hides which specific organ systems are actually at risk.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>Multi-model pipeline (Logistic Regression, Random Forest, Gradient Boosting) across 100+ biomarkers, delivering organ-by-organ probability dashboards.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill">5 organ-risk models</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Capstone_Organ_Wise_Disease_Risk.pdf','Capstone: Organ-Wise Disease Risk','pdf')">View</button>
+            <a href="Capstone_Organ_Wise_Disease_Risk.pdf" download>Download</a>
+          </div>
         </div>
-        <p>An end-to-end health-risk ML pipeline using Logistic Regression, Random Forest and Gradient Boosting across 100+ clinical, demographic and lifestyle parameters, with engineered biomarker categorization, age/smoking/lifestyle risk multipliers, and dashboards reporting probability-based cardiovascular, hepatic, renal, metabolic and hematology risk.</p>
-        <div class="proj-links"><a href="Capstone_Organ_Wise_Disease_Risk.pdf" download>Download report (PDF)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">10</div>
-      <div>
-        <div class="proj-head">
-          <h3>Market Street Wine — Case Study</h3>
-          <div class="tags"><span class="tag flag">XLRI · Case Study</span><span class="tag">R · EDA</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">10</span><img src="img/Market%20Street%20Wine.png" alt="Geospatial map of winery catalog"></div>
+      <div class="body">
+        <h3>Market Street Wine — Case Study</h3>
+        <div class="tags"><span class="tag flag">XLRI · Case Study</span><span class="tag">R · EDA</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>A wine retailer needed to know which catalog segment to prioritize for millennial buyers.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>R-based EDA and geospatial mapping of the wine catalog to identify the highest-opportunity price and variety segment.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill">With D. Rohra, D. Sharma, M. Rathod</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('Market_Street_Wine_Case_Study.pptx','Market Street Wine — Case Study','office')">View</button>
+            <a href="Market_Street_Wine_Case_Study.pptx" download>Download</a>
+          </div>
         </div>
-        <p>With Deepika Rohra, Diwakar Sharma and Mayank Rathod. A retail strategy case using R for data cleaning and exploratory analysis of a wine catalog — identifying under-$20, 750ml Red/White/Rosé wines as the highest-opportunity segment for a wine retailer targeting millennial buyers, based on flavor variety, regional availability and rating-vs-price patterns.</p>
-        <div class="proj-links"><a href="Market_Street_Wine_Case_Study.pptx" download>Download deck (PPTX)</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">11</div>
-      <div>
-        <div class="proj-head">
-          <h3>FurniturePro — Power BI Sales &amp; Operations Report</h3>
-          <div class="tags"><span class="tag">Power BI · DAX</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">11</span><img src="img/PowerBI.png" alt="FurniturePro Power BI dashboard mockup"></div>
+      <div class="body">
+        <h3>FurniturePro — Power BI Report</h3>
+        <div class="tags"><span class="tag">Power BI · DAX</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Sales and operations KPIs were scattered across spreadsheets with no live, shared view.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>A Power BI data model and report surfacing sales, inventory and fulfilment KPIs in one workbook.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill">Opens in Power BI Desktop</span>
+          <div class="pcard-links">
+            <a href="FurnitureProReport.pbix" download>Download .pbix</a>
+          </div>
         </div>
-        <p>A Power BI report modeling FurniturePro's sales, inventory and operational KPIs — built as a working dashboard file for stakeholders to explore directly rather than a static export.</p>
-        <div class="proj-links"><a href="FurnitureProReport.pbix" download>Download .pbix</a></div>
       </div>
     </div>
 
-    <div class="proj">
-      <div class="n">12</div>
-      <div>
-        <div class="proj-head">
-          <h3>NLP Coursework — Text Preprocessing to Transformers</h3>
-          <div class="tags"><span class="tag flag">XLRI</span><span class="tag">NLP</span></div>
+    <div class="pcard">
+      <div class="thumb-wrap"><span class="idx-badge">12</span><img src="img/NLP.png" alt="Transformer architecture diagram"></div>
+      <div class="body">
+        <h3>NLP Coursework</h3>
+        <div class="tags"><span class="tag flag">XLRI</span><span class="tag">NLP</span></div>
+        <div class="pl-row"><span class="lbl">Problem</span><p>Needed a grounded, from-scratch understanding of NLP before shipping the CarDekho gender-prediction model.</p></div>
+        <div class="pl-row"><span class="lbl">Method</span><p>Coursework spanning preprocessing, vectorization, sentiment and topic modelling, and transformer architecture.</p></div>
+        <div class="pcard-foot">
+          <span class="stat-pill">Foundation for Project 01</span>
+          <div class="pcard-links">
+            <button class="linklike" onclick="openFile('NLP.pdf','NLP Coursework','pdf')">View</button>
+            <a href="NLP.pdf" download>Download</a>
+          </div>
         </div>
-        <p>Coursework notes and exercises spanning text preprocessing, vectorization, sentiment analysis, text classification, topic modelling, neural networks and transformer-based LLMs — the theoretical foundation behind the NLP gender-prediction model shipped at CarDekho.</p>
-        <div class="proj-links"><a href="NLP.pdf" download>Download notes (PDF)</a></div>
       </div>
     </div>
 
   </div>
-
-
 </section>
 
 <section id="notes" class="wrap">
@@ -503,6 +583,54 @@
   </div>
  </div>
 </footer>
+
+<div id="fileModal" class="modal-overlay" onclick="closeFileOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-bar">
+      <span id="modalTitle">Preview</span>
+      <div class="modal-actions">
+        <a id="modalDownload" href="#" download class="modal-dl">Download</a>
+        <button class="modal-close" onclick="closeFile()" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <iframe id="fileFrame" src="" title="File preview"></iframe>
+    <p id="modalNote" style="display:none; margin:0; padding:10px 18px; font-size:.8rem; color:#6E6B60; border-top:1px solid #E4DFD0;">If the preview doesn't load (common for PowerPoint files viewed before this site is publicly deployed), use Download instead.</p>
+  </div>
+</div>
+
+<script>
+  function openFile(path, title, type){
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalDownload').setAttribute('href', path);
+    var frame = document.getElementById('fileFrame');
+    var note = document.getElementById('modalNote');
+    if(type === 'office'){
+      var abs = window.location.href.replace(/[^/]*$/, '') + path;
+      frame.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(abs) + '&embedded=true';
+      note.style.display = 'block';
+    } else {
+      frame.src = path;
+      note.style.display = 'none';
+    }
+    document.getElementById('fileModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function openResume(e){
+    if(e) e.preventDefault();
+    openFile('KunalKaushalResume.pdf', 'Kunal Kaushal — Résumé', 'pdf');
+  }
+  function closeFile(){
+    document.getElementById('fileModal').classList.remove('open');
+    document.getElementById('fileFrame').src = '';
+    document.body.style.overflow = '';
+  }
+  function closeFileOverlay(e){
+    if(e.target.id === 'fileModal') closeFile();
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeFile();
+  });
+</script>
 
 </body>
 </html>
