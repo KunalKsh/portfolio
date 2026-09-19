@@ -179,9 +179,9 @@
   /* WORK — VISUAL CARDS */
   .work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:26px; }
   .pcard{ background:var(--card); border:1px solid var(--line); display:flex; flex-direction:column; }
-  .pcard .thumb-wrap{ position:relative; width:100%; aspect-ratio:900/540; overflow:hidden; border-bottom:1px solid var(--line); background:#0F1B2E; }
-  .pcard .thumb-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .pcard .idx-badge{ position:absolute; top:10px; left:10px; background:rgba(15,27,46,.82); color:var(--brass-soft); font-family:'IBM Plex Mono',monospace; font-size:.72rem; padding:3px 8px; }
+  .pcard .thumb-wrap{ position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-bottom:1px solid var(--line); background:#0F1B2E; }
+  .pcard .thumb-wrap img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .pcard .idx-badge{ display:none; }
   .pcard .body{ padding:20px 22px 22px; display:flex; flex-direction:column; flex:1; }
   .pcard h3{ margin:0 0 8px; font-size:1.12rem; font-weight:500; line-height:1.3; }
   .pcard .tags{ margin-bottom:12px; }
